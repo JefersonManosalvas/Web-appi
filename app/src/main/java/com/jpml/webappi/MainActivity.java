@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ConsumirApi(){
-        String url="https://ejemplo2apimovil20240128220859.azurewebsites.net/api/Operaciones?a="+v1.getText()+"&b="+v2.getText();
+        String url="http://10.10.30.142/CORECCION1/wvs/wapi.php?op=validar&cla="+v1.getText()+"&usu="+v2.getText();
 
 
         OkHttpClient cliente=new OkHttpClient();
@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 try{
 
                     ResponseBody responseBody=response.body();
-                    if(response.isSuccessful()){
+                    if( response.isSuccessful()){
+
+
 
                         respuesta = responseBody.string();
                         MainActivity.this.runOnUiThread(new Runnable() {
