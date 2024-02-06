@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/inicio"
+        android:icon="@drawable/baseline_home_24"
+        android:title=""
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/agrega"
+        android:icon="@drawable/baseline_add_24"
+        android:title=""
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/consultar"
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:title=""
+        app:showAsAction="never"/>
+
+</menu>

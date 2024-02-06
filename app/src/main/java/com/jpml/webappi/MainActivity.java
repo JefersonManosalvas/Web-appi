@@ -2,6 +2,7 @@ package com.jpml.webappi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -22,7 +27,7 @@ import okhttp3.ResponseBody;
 public class MainActivity extends AppCompatActivity {
     EditText v1,v2;
     Button btn1;
-    TextView res1;
+   // TextView res1;
     String respuesta;
 
     @Override
@@ -30,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        v1=findViewById(R.id.edV1);
-        v2=findViewById(R.id.edV2);
-        btn1=findViewById(R.id.button);
-        res1=findViewById(R.id.txtREs);
+        v1=findViewById(R.id.edUsuario);
+        v2=findViewById(R.id.edClave);
+        btn1=findViewById(R.id.btnAceptar);
+        //res1=findViewById(R.id.txtREs);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,42 +72,34 @@ public class MainActivity extends AppCompatActivity {
                     ResponseBody responseBody=response.body();
                     if( response.isSuccessful()){
 
-
-
                         respuesta = responseBody.string();
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                res1.setText(respuesta);
+                              //  res1.setText(respuesta);
                                 //Toast.makeText(MainActivity.this, respuesta, Toast.LENGTH_SHORT).show();
 
-//                                if (respuesta.equals("1")) {
-//                                    Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    Toast.makeText(MainActivity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
-//                                }
-
-
+                                if (respuesta.equals("1")) {
+                                    //Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MainActivity.this, Principal_Activity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }else{
                         throw new IOException("Respuesta inesperada"+response);
 
-
-
-
                     }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-
-
             }
         });
 
-
-
     }
+
+
 }
