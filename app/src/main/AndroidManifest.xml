@@ -16,12 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".Con_reg"
             android:exported="false">
 
         </activity>
         <activity
-            android:name=".Con_reg"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

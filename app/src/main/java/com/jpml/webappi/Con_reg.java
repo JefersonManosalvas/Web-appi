@@ -29,7 +29,7 @@ public class Con_reg extends AppCompatActivity {
         registroTextView = findViewById(R.id.registroTextView);
 
         // Llamando al método para realizar la solicitud al servicio web
-        new ConsultarRegistroTask().execute("http://10.10.30.142/CORECCION1/wvs/wapi.php?op=con");
+        new ConsultarRegistroTask().execute("http://192.168.1.110/CORECCION1/wvs/wapi.php?op=validar&cla=1234&usu=paules");
     }
     private class ConsultarRegistroTask extends AsyncTask<String, Void, String> {
 
@@ -53,13 +53,20 @@ public class Con_reg extends AppCompatActivity {
             }
             return resultado;
         }
-
         @Override
         protected void onPostExecute(String resultado) {
             super.onPostExecute(resultado);
+
             // Mostrar el resultado en el TextView
             registroTextView.setText(resultado);
+
             // Puedes realizar cualquier otro procesamiento necesario con el resultado aquí
+            if ("1".equals(resultado)) {
+                Toast.makeText(Con_reg.this, "usu correcto", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Con_reg.this, "usu incorrecto", Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 }

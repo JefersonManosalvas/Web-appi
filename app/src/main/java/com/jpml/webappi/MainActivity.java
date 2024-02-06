@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ConsumirApi(){
-        String url="http://10.10.30.142/CORECCION1/wvs/wapi.php?op=validar&cla="+v1.getText()+"&usu="+v2.getText();
+        //String url="https://ejemplo2apimovil20240128220859.azurewebsites.net/api/Operaciones?a="+v1.getText()+"&b="+v2.getText();
+        String url="http://192.168.1.106/CORECCION1/wvs/wapi.php?op=validar&cla="+v2.getText()+"&usu="+v1.getText();
 
 
         OkHttpClient cliente=new OkHttpClient();
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         cliente.newCall(get).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                Toast.makeText(getApplicationContext(), "Fallo la conexión", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -72,7 +73,17 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
                                 res1.setText(respuesta);
+                                //Toast.makeText(MainActivity.this, respuesta, Toast.LENGTH_SHORT).show();
+
+//                                if (respuesta.equals("1")) {
+//                                    Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    Toast.makeText(MainActivity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
+//                                }
+
+
                             }
                         });
                     }else{
