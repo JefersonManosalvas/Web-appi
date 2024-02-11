@@ -16,12 +16,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ConsultaTurnos_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".CrearUsuario"
+            android:exported="false"></activity>
+        <activity
             android:name=".RegistraTurno_Activity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".Principal_Activity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

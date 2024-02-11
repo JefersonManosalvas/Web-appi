@@ -1,13 +1,18 @@
 package com.jpml.webappi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,33 +24,122 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import android.view.View;
 
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
 
-public class RegistraTurno_Activity extends AppCompatActivity {
-    EditText cedula,nombre;
-    TextView Fecha;
-    String respuesta = "", datos;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+public class RegistraTurno_Activity extends AppCompatActivity {
+    EditText cedula;
+    TextView nombreComp,telefono;
+    String respuesta = "", datos;
+    Spinner spi;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registra_turno);
-        cedula=findViewById(R.id.edCedula2);
-        nombre=findViewById(R.id.edNombres2);
-        Fecha=findViewById(R.id.txtFecha2);
-        ConsumirAPI();
+        cedula = findViewById(R.id.edCedula2);
+        nombreComp = findViewById(R.id.edNombreYApellido);
+        telefono=findViewById(R.id.edTelefonoUsu);
+        spi=findViewById(R.id.spinner);
+        APICBX();
+        View rootView = findViewById(android.R.id.content);
+
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ConsultarAPI();
+            }
+        });
+
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.inicio) {
+                    // Toast.makeText(Principal_Activity.this,"A SELECCIONADO LA OPCION 1",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(RegistraTurno_Activity.this, Principal_Activity.class);
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.agrega) {
+                    Intent intent = new Intent(RegistraTurno_Activity.this, RegistraTurno_Activity.class);
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.consultar) {
+                    Intent intent = new Intent(RegistraTurno_Activity.this, ConsultaTurnos_Activity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
     }
 
 
-    public void ConsumirAPI() {
+    public void ConsumirApi() {
+        //String url="https://ejemplo2apimovil20240128220859.azurewebsites.net/api/Operaciones?a="+v1.getText()+"&b="+v2.getText();
+        String url = "http://192.168.1.108/ApisMovil/api.php?op=insTurnos&ced=1004656979";
+
+
+        OkHttpClient cliente = new OkHttpClient();
+
+        Request get = new Request.Builder().url(url).build();
+
+
+        cliente.newCall(get).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(getApplicationContext(), "Fallo la conexión", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+
+                    ResponseBody responseBody = response.body();
+                    if (response.isSuccessful()) {
+
+                        respuesta = responseBody.string();
+                        RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                //  res1.setText(respuesta);
+                                //Toast.makeText(MainActivity.this, respuesta, Toast.LENGTH_SHORT).show();
+
+                                if (respuesta.equals("2")) {
+                                    //Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegistraTurno_Activity.this, Principal_Activity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(RegistraTurno_Activity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        throw new IOException("Respuesta inesperada" + response);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    public void ConsultarAPI() {
         //DIRECCIÓN URL DEL SERVICIO A CONSUMIR
-        String url = "http://192.168.1.106/coreccion1/wvs/wapi.php?op=con&id=1004656979";
+        String url = "http://192.168.1.108/ApisMovil/api.php?op=ConsultaTurno&ced="+cedula.getText();
         //OBJETO PARA EL USO DE PROTOCOLO HTTP
         OkHttpClient cliente = new OkHttpClient();
         //CONSTRUIMOS EL REQUERIMIENTO DEL TIPO DE API (GET,POST,PUT, DELETE)
@@ -77,16 +171,12 @@ public class RegistraTurno_Activity extends AppCompatActivity {
                         RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //tvResultado.setText(respuesta);
-                                //Toast.makeText(Principal_Activity.this,"El resultado es:"+respuesta,Toast.LENGTH_LONG).show();
+                            /*tvResultado.setText(respuesta);
+                            Toast.makeText(MainActivity.this,"El resultado es:"+respuesta,Toast.LENGTH_LONG).show();*/
                                 try {
                                     JSONObject json = new JSONObject(respuesta);
-//                                    datos = json.getString("Cedula");
-//                                    Toast.makeText(RegistraTurno_Activity.this, "" + datos, Toast.LENGTH_SHORT).show();
-////                                    nombre.setText(json.getString("userId"));
-//                                    telefono.setText(json.getString("id"));
-                                    cedula.setText(json.getString("Cedula"));
-                                    nombre.setText(json.getString("usu_nombre")+" "+json.getString("usu_apellido"));
+                                    nombreComp.setText(json.getString("nombre_completo"));
+                                    telefono.setText(json.getString("telefono"));
                                 } catch (JSONException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -95,9 +185,6 @@ public class RegistraTurno_Activity extends AppCompatActivity {
                             }
                         });
                     }
-
-
-                    // Log.i("data", responseBody.string());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -105,41 +192,70 @@ public class RegistraTurno_Activity extends AppCompatActivity {
         });
 
 
+//            public void guardaInicio(View view){
+//                Intent intent =new Intent(RegistraTurno_Activity.this, Principal_Activity.class);
+//                startActivity(intent);
+//            }
 
 
     }
+    public void APICBX() {
+        // Dirección URL del servicio a consumir
+        String url = "http://192.168.1.108/ApisMovil/api.php?op=Servicios";
 
+        OkHttpClient cliente = new OkHttpClient();
+        Request get = new Request.Builder().url(url).build();
 
-    public void AbrirCalendario(View view){
-        Calendar cal= Calendar.getInstance();
-        int anio= cal.get(Calendar.YEAR);
-        int mes= cal.get(Calendar.MONTH);
-        int dia= cal.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dpd=new DatePickerDialog(RegistraTurno_Activity.this, new DatePickerDialog.OnDateSetListener() {
+        cliente.newCall(get).enqueue(new Callback() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String fecha= dayOfMonth+"/"+(month+1)+"/"+year;
-                Fecha.setText(fecha);
-            }
-        },dia,mes,anio);
-        dpd.show();
-}
-
-
-            public void guardaInicio(View view){
-                Intent intent =new Intent(RegistraTurno_Activity.this, Principal_Activity.class);
-                startActivity(intent);
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
 
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    // Obtenemos la respuesta
+                    ResponseBody responseBody = response.body();
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    } else {
+                        respuesta = responseBody.string();
 
+                        // Procesamos la respuesta en el hilo principal
+                        RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    // Parseamos el JSON
+                                    JSONArray jsonArray = new JSONArray(respuesta);
 
+                                    // Creamos un ArrayList para almacenar los datos del Spinner
+                                    ArrayList<String> servicios = new ArrayList<>();
 
+                                    // Iteramos sobre el JSONArray y añadimos los datos al ArrayList
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        String tipoServicio = jsonObject.getString("tipo_servicio");
+                                        servicios.add(tipoServicio);
+                                    }
 
+                                    // Creamos un ArrayAdapter y lo establecemos en el Spinner
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(RegistraTurno_Activity.this, android.R.layout.simple_spinner_item, servicios);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spi.setAdapter(adapter);
 
-
-
-
-
-
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 }

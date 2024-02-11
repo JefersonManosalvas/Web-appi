@@ -4,19 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
-
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -24,25 +18,27 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class MainActivity extends AppCompatActivity {
-    EditText v1,v2;
-    TextView creaUsu;
-    Button btn1;
-   // TextView res1;
+
+
+public class CrearUsuario extends AppCompatActivity {
+
+    EditText cedula,usu,correo, cont,nombres,telefono;
+
     String respuesta;
+    Button guarda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        v1=findViewById(R.id.edUsuario);
-        v2=findViewById(R.id.edClave);
-        btn1=findViewById(R.id.btnAceptar);
-        creaUsu=findViewById(R.id.txtCrearCuenta);
-        //res1=findViewById(R.id.txtREs);
-
-        btn1.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_crear_usuario);
+        cedula=findViewById(R.id.edCedula);
+        usu=findViewById(R.id.edNombUsuario);
+        correo=findViewById(R.id.edEmail);
+        cont=findViewById(R.id.edContrasenia);
+        nombres=findViewById(R.id.edNombres);
+        telefono=findViewById(R.id.edTelefono);
+        guarda=findViewById(R.id.btnRegistrar);
+        guarda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ConsumirApi();
@@ -51,17 +47,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     public void ConsumirApi(){
+        String datos=nombres.getText().toString();
+        String[] parts = datos.split(" ");
+        String nombre = parts[0];
+        String apellido = parts[1];
+
         //String url="https://ejemplo2apimovil20240128220859.azurewebsites.net/api/Operaciones?a="+v1.getText()+"&b="+v2.getText();
-        String url="http://192.168.1.108/ApisMovil/api.php?op=validar&usu="+v1.getText()+"&cla="+v2.getText();
+        String url="http://192.168.1.108/ApisMovil/api.php?op=insertar&ced="+cedula.getText()+"&nomb="+nombre+"&ape="+apellido+"&tele="+telefono.getText()+"&correo="+correo.getText()+"&usu="+usu.getText()+"&cla="+cont.getText();
 
 
-        OkHttpClient cliente=new OkHttpClient();
+        OkHttpClient registra=new OkHttpClient();
 
         Request get=new Request.Builder().url(url).build();
 
 
-        cliente.newCall(get).enqueue(new Callback() {
+        registra.newCall(get).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Toast.makeText(getApplicationContext(), "Fallo la conexión", Toast.LENGTH_SHORT).show();
@@ -75,19 +80,19 @@ public class MainActivity extends AppCompatActivity {
                     if( response.isSuccessful()){
 
                         respuesta = responseBody.string();
-                        MainActivity.this.runOnUiThread(new Runnable() {
+                        CrearUsuario.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                              //  res1.setText(respuesta);
-                                //Toast.makeText(MainActivity.this, respuesta, Toast.LENGTH_SHORT).show();
+                                //  res1.setText(respuesta);
+                                //Toast.makeText(CrearUsuario.this, respuesta, Toast.LENGTH_SHORT).show();
 
-                                if (respuesta.equals("2")) {
-                                    //Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(MainActivity.this, Principal_Activity.class);
+                                if (respuesta.equals("1")) {
+                                    Toast.makeText(CrearUsuario.this, "REGISTRO EXITOSO", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(CrearUsuario.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(MainActivity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CrearUsuario.this, "ERROR AL CREAR EL USUARIO INTENTELO MAS TARDE", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -102,14 +107,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-    public  void crearCuenta(View view){
-        Intent intent = new Intent(MainActivity.this, CrearUsuario.class);
-        startActivity(intent);
-
-    }
-
 
 }

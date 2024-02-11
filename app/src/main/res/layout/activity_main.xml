@@ -153,4 +153,36 @@
         app:layout_constraintVertical_bias="0.865"
         tools:text="SIGIENTE" />
 
+    <TextView
+        android:id="@+id/txtCrearCuenta"
+        android:layout_width="263dp"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:onClick="crearCuenta"
+        android:text="¿No tienes una cuenta? Crea una aquí."
+        android:textColor="@color/Azul"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.921" />
+
+    <TextView
+        android:id="@+id/textViewOlvidoContrasena"
+        android:layout_width="281dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:onClick="recuperarContrasena"
+        android:text="¿Olvidaste tu contraseña? Recupérala aquí."
+        android:textColor="@color/Azul"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtCrearCuenta"
+        app:layout_constraintVertical_bias="0.0" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -77,8 +77,8 @@ public class Principal_Activity extends AppCompatActivity {
                     Intent intent = new Intent(Principal_Activity.this,RegistraTurno_Activity.class);
                     startActivity(intent);
                 } else if (item.getItemId()==R.id.consultar) {
-                    Toast.makeText(Principal_Activity.this,"A SELECCIONADO LA OPCION 3",Toast.LENGTH_LONG).show();
-
+                    Intent intent = new Intent(Principal_Activity.this, ConsultaTurnos_Activity.class);
+                    startActivity(intent);
                 }
                 return false;
             }
