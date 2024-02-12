@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,6 +54,7 @@ public class Principal_Activity extends AppCompatActivity {
 //    EditText cedula ,nombre,telefono;
 //
 //    Button calendario;
+    String respuesta,DatosResult;
 //
 
     @Override
@@ -61,6 +63,12 @@ public class Principal_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         toolbar1=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar1);
+
+
+        Intent intent = getIntent();
+        String usuario = intent.getStringExtra("usuario");
+        String clave = intent.getStringExtra("clave");
+
 
 
 
@@ -74,8 +82,11 @@ public class Principal_Activity extends AppCompatActivity {
                     Toast.makeText(Principal_Activity.this,"A SELECCIONADO LA OPCION 1",Toast.LENGTH_LONG).show();
 
                 } else if (item.getItemId()==R.id.agrega) {
-                    Intent intent = new Intent(Principal_Activity.this,RegistraTurno_Activity.class);
-                    startActivity(intent);
+                    Intent reg = new Intent(Principal_Activity.this, RegistraTurno_Activity.class);
+                    // Pasar los valores como extras al Intent
+                    reg.putExtra("usuario", usuario);
+                    reg.putExtra("clave", clave);
+                    startActivity(reg);
                 } else if (item.getItemId()==R.id.consultar) {
                     Intent intent = new Intent(Principal_Activity.this, ConsultaTurnos_Activity.class);
                     startActivity(intent);
@@ -146,6 +157,8 @@ public class Principal_Activity extends AppCompatActivity {
 //
 //        builder.show();
 //    }
+
+
 //
 
 

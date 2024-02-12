@@ -17,6 +17,10 @@ import java.io.IOException;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -27,6 +31,7 @@ import okhttp3.ResponseBody;
 public class MainActivity extends AppCompatActivity {
     EditText v1,v2;
     TextView creaUsu;
+
     Button btn1;
    // TextView res1;
     String respuesta;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         v1=findViewById(R.id.edUsuario);
         v2=findViewById(R.id.edClave);
@@ -85,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                                 if (respuesta.equals("2")) {
                                     //Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, Principal_Activity.class);
+                                    intent.putExtra("usuario", v1.getText().toString());
+                                    intent.putExtra("clave", v2.getText().toString());
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(MainActivity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
@@ -110,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+
+
 
 
 }
