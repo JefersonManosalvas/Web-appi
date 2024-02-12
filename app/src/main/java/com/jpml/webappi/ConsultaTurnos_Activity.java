@@ -71,15 +71,11 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
 
 
     public void ConsultarAPI() {
-        //DIRECCIÓN URL DEL SERVICIO A CONSUMIR
-        String url = "http://192.168.1.108/ApisMovil/api.php?op=DatosTurno&ced="+Cedula;
-        //OBJETO PARA EL USO DE PROTOCOLO HTTP
+        String url = "http://192.168.1.106/ApisMovil/api.php?op=DatosTurno&ced="+Cedula;
         OkHttpClient cliente = new OkHttpClient();
-        //CONSTRUIMOS EL REQUERIMIENTO DEL TIPO DE API (GET,POST,PUT, DELETE)
         Request get = new Request.Builder()
                 .url(url)
                 .build();
-        //A TRAVÉS DE OKHTTP LLAMAMOS AL SERVICIO Y ENCOLAMOS LAS PETICIONES
         cliente.newCall(get).enqueue(new Callback() {
 
 
@@ -91,7 +87,6 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) {
                 try {
-                    //OBTENEMOS LA RESPUESTA
                     ResponseBody responseBody = response.body();
                     if (!response.isSuccessful()) {
                         throw new IOException("Unexpected code " + response);
@@ -99,13 +94,9 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
                     } else {
 
                         respuesta = responseBody.string();
-
-                        // A TRAVÉS DEL USO DE HILOS PARALELAMENTE A LA CONSULTA DEL SERVIDOR MOSTRAMOS LA RESPUESTA
                         ConsultaTurnos_Activity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                            /*tvResultado.setText(respuesta);
-                            Toast.makeText(MainActivity.this,"El resultado es:"+respuesta,Toast.LENGTH_LONG).show();*/
                                 try {
                                     JSONObject json = new JSONObject(respuesta);
                                     String fechaCompleta = json.getString("fecha");

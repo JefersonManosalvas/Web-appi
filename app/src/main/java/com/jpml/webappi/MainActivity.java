@@ -30,10 +30,9 @@ import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity {
     EditText v1,v2;
-    TextView creaUsu;
+    TextView creaUsu,recContra;
 
     Button btn1;
-   // TextView res1;
     String respuesta;
 
     @Override
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         v2=findViewById(R.id.edClave);
         btn1=findViewById(R.id.btnAceptar);
         creaUsu=findViewById(R.id.txtCrearCuenta);
-        //res1=findViewById(R.id.txtREs);
+        recContra=findViewById(R.id.txtOlvidoContrasena);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ConsumirApi(){
-        //String url="https://ejemplo2apimovil20240128220859.azurewebsites.net/api/Operaciones?a="+v1.getText()+"&b="+v2.getText();
-        String url="http://192.168.1.108/ApisMovil/api.php?op=validar&usu="+v1.getText()+"&cla="+v2.getText();
+        String url="http://192.168.1.106/ApisMovil/api.php?op=validar&usu="+v1.getText()+"&cla="+v2.getText();
 
 
         OkHttpClient cliente=new OkHttpClient();
@@ -84,10 +82,6 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
-                              //  res1.setText(respuesta);
-                                //Toast.makeText(MainActivity.this, respuesta, Toast.LENGTH_SHORT).show();
-
                                 if (respuesta.equals("2")) {
                                     //Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, Principal_Activity.class);
@@ -115,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
     public  void crearCuenta(View view){
         Intent intent = new Intent(MainActivity.this, CrearUsuario.class);
+        startActivity(intent);
+
+    }
+
+
+    public  void recuperarContrasena(View view){
+        Intent intent = new Intent(MainActivity.this, RecUsuario.class);
         startActivity(intent);
 
     }

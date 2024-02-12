@@ -41,14 +41,15 @@ public class CrearUsuario extends AppCompatActivity {
         guarda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConsumirApi();
+                if (camposValidos()) {
+                    ConsumirApi();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
-
-
-
 
 
     public void ConsumirApi(){
@@ -56,9 +57,7 @@ public class CrearUsuario extends AppCompatActivity {
         String[] parts = datos.split(" ");
         String nombre = parts[0];
         String apellido = parts[1];
-
-        //String url="https://ejemplo2apimovil20240128220859.azurewebsites.net/api/Operaciones?a="+v1.getText()+"&b="+v2.getText();
-        String url="http://192.168.1.108/ApisMovil/api.php?op=insertar&ced="+cedula.getText()+"&nomb="+nombre+"&ape="+apellido+"&tele="+telefono.getText()+"&correo="+correo.getText()+"&usu="+usu.getText()+"&cla="+cont.getText();
+        String url="http://192.168.1.106/ApisMovil/api.php?op=insertar&ced="+cedula.getText()+"&nomb="+nombre+"&ape="+apellido+"&tele="+telefono.getText()+"&correo="+correo.getText()+"&usu="+usu.getText()+"&cla="+cont.getText();
 
 
         OkHttpClient registra=new OkHttpClient();
@@ -83,10 +82,6 @@ public class CrearUsuario extends AppCompatActivity {
                         CrearUsuario.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
-                                //  res1.setText(respuesta);
-                                //Toast.makeText(CrearUsuario.this, respuesta, Toast.LENGTH_SHORT).show();
-
                                 if (respuesta.equals("1")) {
                                     Toast.makeText(CrearUsuario.this, "REGISTRO EXITOSO", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CrearUsuario.this, MainActivity.class);
@@ -106,6 +101,14 @@ public class CrearUsuario extends AppCompatActivity {
             }
         });
 
+    }
+    private boolean camposValidos() {
+        return !cedula.getText().toString().isEmpty() &&
+                !usu.getText().toString().isEmpty() &&
+                !correo.getText().toString().isEmpty() &&
+                !cont.getText().toString().isEmpty() &&
+                !nombres.getText().toString().isEmpty() &&
+                !telefono.getText().toString().isEmpty();
     }
 
 }

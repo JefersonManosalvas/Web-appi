@@ -24,7 +24,7 @@
     <TextView
         android:id="@+id/lblTitulo1"
         android:layout_width="216dp"
-        android:layout_height="72dp"
+        android:layout_height="79dp"
         android:fontFamily="serif"
         android:gravity="center"
         android:text="BIENVENIDOS AL SISTEMA DE  TURNOS "
@@ -93,8 +93,8 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="75dp"
-        android:layout_height="32dp"
+        android:layout_width="108dp"
+        android:layout_height="33dp"
         android:fontFamily="serif"
         android:text="LOGIN"
         android:textSize="20sp"
@@ -147,10 +147,10 @@
         app:iconTint="#FBFBFB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.843"
+        app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.865"
+        app:layout_constraintVertical_bias="0.82"
         tools:text="SIGIENTE" />
 
     <TextView
@@ -163,15 +163,15 @@
         android:textColor="@color/Azul"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.921" />
+        app:layout_constraintVertical_bias="0.884" />
 
     <TextView
-        android:id="@+id/textViewOlvidoContrasena"
-        android:layout_width="281dp"
-        android:layout_height="31dp"
+        android:id="@+id/txtOlvidoContrasena"
+        android:layout_width="303dp"
+        android:layout_height="33dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:onClick="recuperarContrasena"
