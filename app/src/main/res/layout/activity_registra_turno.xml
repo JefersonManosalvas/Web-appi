@@ -78,6 +78,7 @@
             android:layout_marginRight="37dp"
             android:layout_marginBottom="10dp"
             android:hint="consultar"
+            android:onClick="consultas"
             app:backgroundTint="#FDFCFC"
             app:icon="@drawable/baseline_calendar_today_24"
             app:iconTint="#020202"

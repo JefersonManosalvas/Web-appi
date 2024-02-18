@@ -3,10 +3,13 @@ package com.jpml.webappi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AlertDialog;
+
+import android.content.Context;
 import android.content.DialogInterface;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -67,15 +70,13 @@ public class Principal_Activity extends AppCompatActivity {
         toolbar1 = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar1);
 
+       
+
 
         Bundle datos = this.getIntent().getExtras();
          Usuario = datos.getString("usuario");
          Clave = datos.getString("clave");
         ConsultarAPI();
-
-
-
-
 
 
     }
@@ -118,6 +119,7 @@ public class Principal_Activity extends AppCompatActivity {
                                         cedula = json.getString("Cedula");
                                         nombres = json.getString("nombre_completo");
                                         telefono = json.getString("telefono");
+                                        guardarEnSharedPreferences();
                                     }
                                     } catch(JSONException e){
                                         throw new RuntimeException(e);
@@ -135,25 +137,31 @@ public class Principal_Activity extends AppCompatActivity {
         });
     }
 
+    private void guardarEnSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("datos", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("cedula", cedula);
+        editor.putString("nombre", nombres);
+        editor.putString("telefono", telefono);
+        editor.apply();
+    }
+
 
     public  void agregarT(View view){
-        Bundle datos = new Bundle();
-        String Cedula = cedula;
-        String Nombres = nombres;
-        String Telefono = telefono;
+
         Intent intent = new Intent(Principal_Activity.this, RegistraTurno_Activity.class);
-        datos.putString("cedula", Cedula);
-        datos.putString("nombres", Nombres);
-        datos.putString("telefono", Telefono);
-        intent.putExtras(datos);
         startActivity(intent);
 
     }
 
     public  void consultaT(View view){
+//        Bundle datos = new Bundle();
+//        String Cedula = cedula;
         Intent intent = new Intent(Principal_Activity.this, ConsultaTurnos_Activity.class);
+//        datos.putString("cedula", Cedula);
+//        intent.putExtras(datos);
         startActivity(intent);
-        finish();
+
     }
 
 
