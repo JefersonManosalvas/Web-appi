@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,8 @@ import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -50,8 +53,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class Principal_Activity extends AppCompatActivity {
     private Toolbar toolbar1;
 
-    String respuesta,DatosResult;
+    String respuesta,DatosResult,usuario,clave;
 
+    VideoView video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,11 @@ public class Principal_Activity extends AppCompatActivity {
         String usuario = intent.getStringExtra("usuario");
         String clave = intent.getStringExtra("clave");
         BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
+        video=findViewById(R.id.videoView_v);
+
+        video.setVideoURI(Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.turnos));
+        video.start();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -79,6 +88,9 @@ public class Principal_Activity extends AppCompatActivity {
                         startActivity(reg);
                     } else if (item.getItemId() == R.id.consultar) {
                         Intent intent = new Intent(Principal_Activity.this, ConsultaTurnos_Activity.class);
+                        // Pasar los valores como extras al Intent
+                        intent.putExtra("Usu", usuario);
+                        intent.putExtra("Clave", clave);
                         startActivity(intent);
                     }
                     return false;

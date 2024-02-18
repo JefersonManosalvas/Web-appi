@@ -48,7 +48,7 @@ public class RecUsuario extends AppCompatActivity {
 
 
             public void ConsumirApi() {
-                String url = "http://192.168.1.106/ApisMovil/api.php?op=Modifica&ced="+cedula.getText()+"&usu="+usuario.getText()+"&Ncla="+Nclave.getText();
+                String url = "http://192.168.1.111/ApisMovil/api.php?op=Modifica&ced="+cedula.getText()+"&usu="+usuario.getText()+"&Ncla="+Nclave.getText();
 
 
                 OkHttpClient cliente = new OkHttpClient();

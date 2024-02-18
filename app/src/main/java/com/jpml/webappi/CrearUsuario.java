@@ -57,7 +57,7 @@ public class CrearUsuario extends AppCompatActivity {
         String[] parts = datos.split(" ");
         String nombre = parts[0];
         String apellido = parts[1];
-        String url="http://192.168.1.106/ApisMovil/api.php?op=insertar&ced="+cedula.getText()+"&nomb="+nombre+"&ape="+apellido+"&tele="+telefono.getText()+"&correo="+correo.getText()+"&usu="+usu.getText()+"&cla="+cont.getText();
+        String url="http://192.168.1.111/ApisMovil/api.php?op=insertar&ced="+cedula.getText()+"&nomb="+nombre+"&ape="+apellido+"&tele="+telefono.getText()+"&correo="+correo.getText()+"&usu="+usu.getText()+"&cla="+cont.getText();
 
 
         OkHttpClient registra=new OkHttpClient();

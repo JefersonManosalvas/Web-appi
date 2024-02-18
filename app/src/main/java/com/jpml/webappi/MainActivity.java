@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ConsumirApi(){
-        String url="http://192.168.1.106/ApisMovil/api.php?op=validar&usu="+v1.getText()+"&cla="+v2.getText();
+        String url="http://192.168.1.111/ApisMovil/api.php?op=validar&usu="+v1.getText()+"&cla="+v2.getText();
 
 
         OkHttpClient cliente=new OkHttpClient();
