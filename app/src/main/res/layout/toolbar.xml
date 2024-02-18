@@ -5,33 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Toolbar en la parte superior -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/toolbar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
-        android:title="" /> <!-- Elimina la propiedad android:title -->
-
-    <!-- Contenido principal de la pantalla -->
+        android:title="" />
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/Navigation">
-        <!--android:layout_below="@+id/topToolbar"-->
-
-        <!-- Aquí puedes colocar el contenido principal de tu pantalla -->
+        android:layout_height="match_parent">
 
     </FrameLayout>
-
-    <!-- BottomNavigationView en la parte inferior con iconos -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/Navigation"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/menu" />
 
 </RelativeLayout>

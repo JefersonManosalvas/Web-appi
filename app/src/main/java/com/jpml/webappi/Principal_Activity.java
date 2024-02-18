@@ -53,7 +53,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class Principal_Activity extends AppCompatActivity {
     private Toolbar toolbar1;
 
-    String respuesta,DatosResult,usuario,clave;
+    String respuesta, Usuario, Clave;
+    String cedula ,nombres,telefono;
 
     VideoView video;
 
@@ -63,41 +64,93 @@ public class Principal_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         toolbar1 = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar1);
-        Intent intent = getIntent();
-        String usuario = intent.getStringExtra("usuario");
-        String clave = intent.getStringExtra("clave");
-        BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
-        video=findViewById(R.id.videoView_v);
 
-        video.setVideoURI(Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.turnos));
-        video.start();
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    if (item.getItemId() == R.id.inicio) {
-                        Intent reg = new Intent(Principal_Activity.this, Principal_Activity.class);
-                        startActivity(reg);
+        Bundle datos = this.getIntent().getExtras();
+         Usuario = datos.getString("usuario");
+         Clave = datos.getString("clave");
+        ConsultarAPI();
 
 
-                    } else if (item.getItemId() == R.id.agrega) {
-                        Intent reg = new Intent(Principal_Activity.this, RegistraTurno_Activity.class);
-                        // Pasar los valores como extras al Intent
-                        reg.putExtra("usuario", usuario);
-                        reg.putExtra("clave", clave);
-                        startActivity(reg);
-                    } else if (item.getItemId() == R.id.consultar) {
-                        Intent intent = new Intent(Principal_Activity.this, ConsultaTurnos_Activity.class);
-                        // Pasar los valores como extras al Intent
-                        intent.putExtra("Usu", usuario);
-                        intent.putExtra("Clave", clave);
-                        startActivity(intent);
-                    }
-                    return false;
-                }
-            });
 
 
-        }
 
     }
+
+
+    public void ConsultarAPI() {
+        String url = "http://192.168.1.111/ApisMovil/api.php?op=ConsultaDatos&usu="+Usuario+"&cla="+Clave;
+        OkHttpClient cliente = new OkHttpClient();
+        Request get = new Request.Builder()
+                .url(url)
+                .build();
+        cliente.newCall(get).enqueue(new Callback() {
+
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    ResponseBody responseBody = response.body();
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+
+                    } else {
+
+                        respuesta = responseBody.string();
+                        Principal_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    if (respuesta.equals("[]")) {
+                                        Toast.makeText(Principal_Activity.this, "error", Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        JSONObject json = new JSONObject(respuesta);
+
+                                        cedula = json.getString("Cedula");
+                                        nombres = json.getString("nombre_completo");
+                                        telefono = json.getString("telefono");
+                                    }
+                                    } catch(JSONException e){
+                                        throw new RuntimeException(e);
+                                    }
+
+
+
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    public  void agregarT(View view){
+        Bundle datos = new Bundle();
+        String Cedula = cedula;
+        String Nombres = nombres;
+        String Telefono = telefono;
+        Intent intent = new Intent(Principal_Activity.this, RegistraTurno_Activity.class);
+        datos.putString("cedula", Cedula);
+        datos.putString("nombres", Nombres);
+        datos.putString("telefono", Telefono);
+        intent.putExtras(datos);
+        startActivity(intent);
+
+    }
+
+
+
+
+
+}
+
+
+

@@ -22,4 +22,77 @@
         app:layout_constraintVertical_bias="0.477"
         tools:ignore="MissingConstraints" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout3"
+        android:layout_width="411dp"
+        android:layout_height="67dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/include2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="59dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="288dp"
+            android:layout_marginRight="288dp"
+            android:layout_marginBottom="10dp"
+            android:background="#F6F5F5"
+            android:hint="home"
+            app:backgroundTint="#FFFFFF"
+            app:icon="@drawable/baseline_home_24"
+            app:iconTint="#040404"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="62dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="160dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="160dp"
+            android:layout_marginRight="160dp"
+            android:layout_marginBottom="10dp"
+            android:hint="agregar"
+            android:onClick="agregarT"
+            app:backgroundTint="#FBFBFB"
+            app:icon="@drawable/baseline_add_24"
+            app:iconTint="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="61dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="283dp"
+            android:layout_marginLeft="283dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginBottom="10dp"
+            android:hint="consultar"
+            app:backgroundTint="#FDFCFC"
+            app:icon="@drawable/baseline_calendar_today_24"
+            app:iconTint="#020202"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,7 @@ import okhttp3.ResponseBody;
 public class ConsultaTurnos_Activity extends AppCompatActivity {
 
     TextView nombreCom, numTurno, fecha, Tservicio;
-    String respuesta, Cedula,Usuario,usu,pass;
+    String respuesta, Cedula, Usuario, usu, pass;
     Button cancela;
 
     @Override
@@ -45,42 +45,10 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
         Tservicio = findViewById(R.id.txtServicio);
         cancela = findViewById(R.id.btnCancelar);
 
-        // Obtener datos de la intención
-        Intent intent = getIntent();
-        Cedula = intent.getStringExtra("cedula");
-        Usuario=intent.getStringExtra("Usuario");
-        usu=intent.getStringExtra("Usu");
-        pass=intent.getStringExtra("Clave");
-
-
 
         // Consultar la API
-        ConsultarAPI();
+        //ConsultarAPI();
 
-        // Configuración del menú de navegación inferior
-        BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.inicio) {
-                    startActivity(new Intent(ConsultaTurnos_Activity.this, Principal_Activity.class));
-                    return true;
-                }
-                if (item.getItemId() == R.id.agrega) {
-                    Intent con =new Intent(ConsultaTurnos_Activity.this, RegistraTurno_Activity.class);
-
-                    con.putExtra("Nomb", usu);
-                    con.putExtra("Pass", pass);
-                    startActivity(con);
-                    return true;
-                }
-                if (item.getItemId() == R.id.consultar) {
-                    startActivity(new Intent(ConsultaTurnos_Activity.this, ConsultaTurnos_Activity.class));
-                    return true;
-                }
-                return false;
-            }
-        });
 
         // Configuración del botón de cancelar
         cancela.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +66,7 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
                 .setMessage("¿Está seguro de cancelar el turno?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        ConsumirApiET();
+                        //ConsumirApiET();
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -108,108 +76,109 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
                 })
                 .show();
     }
-
-    // Método para consultar la API y obtener los datos del turno
-    public void ConsultarAPI() {
-        String url = "http://192.168.1.111/ApisMovil/api.php?op=DatosTurno&ced=" + Cedula;
-        OkHttpClient cliente = new OkHttpClient();
-        Request get = new Request.Builder()
-                .url(url)
-                .build();
-        cliente.newCall(get).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(ConsultaTurnos_Activity.this, "Error al consultar la API", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    ResponseBody responseBody = response.body();
-                    if (!response.isSuccessful()) {
-                        throw new IOException("Unexpected code " + response);
-                    } else {
-                        respuesta = responseBody.string();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    if (respuesta.equals("[]")) {
-                                        Toast.makeText(ConsultaTurnos_Activity.this, "NO TIENE TURNOS GENERADOS PORFAVOR GENERE UN TURNO.", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        JSONObject json = new JSONObject(respuesta);
-                                        if (json.has("error")) {
-                                            String errorMessage = json.getString("error");
-                                            Toast.makeText(ConsultaTurnos_Activity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            String fechaCompleta = json.getString("fecha");
-                                            String fechaSinHora = fechaCompleta.substring(0, fechaCompleta.indexOf(' '));
-                                            fecha.setText(fechaSinHora);
-                                            numTurno.setText(json.getString("numero_turno"));
-                                            nombreCom.setText(json.getString("nombre_completo"));
-                                            Tservicio.setText(json.getString("tipo_servicio"));
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    // Método para consumir la API y cancelar el turno
-    public void ConsumirApiET() {
-        String url = "http://192.168.1.111/ApisMovil/api.php?op=eliminarT&ced=" + Cedula;
-        OkHttpClient cliente = new OkHttpClient();
-
-        Request get = new Request.Builder().url(url).build();
-        cliente.newCall(get).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(ConsultaTurnos_Activity.this, "Fallo la conexión", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    ResponseBody responseBody = response.body();
-                    if (response.isSuccessful()) {
-                        respuesta = responseBody.string();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (respuesta.equals("1")) {
-                                    Toast.makeText(ConsultaTurnos_Activity.this, "El turno ha sido cancelado", Toast.LENGTH_SHORT).show();
-                                } else if (respuesta.equals("2")) {
-                                    Toast.makeText(ConsultaTurnos_Activity.this, "Error al cancelar el turno", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    } else {
-                        throw new IOException("Respuesta inesperada" + response);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 }
+//
+//    // Método para consultar la API y obtener los datos del turno
+//    public void ConsultarAPI() {
+//        String url = "http://192.168.1.111/ApisMovil/api.php?op=DatosTurno&ced=" + Cedula;
+//        OkHttpClient cliente = new OkHttpClient();
+//        Request get = new Request.Builder()
+//                .url(url)
+//                .build();
+//        cliente.newCall(get).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(ConsultaTurnos_Activity.this, "Error al consultar la API", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                try {
+//                    ResponseBody responseBody = response.body();
+//                    if (!response.isSuccessful()) {
+//                        throw new IOException("Unexpected code " + response);
+//                    } else {
+//                        respuesta = responseBody.string();
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                try {
+//                                    if (respuesta.equals("[]")) {
+//                                        Toast.makeText(ConsultaTurnos_Activity.this, "NO TIENE TURNOS GENERADOS PORFAVOR GENERE UN TURNO.", Toast.LENGTH_SHORT).show();
+//                                    } else {
+//                                        JSONObject json = new JSONObject(respuesta);
+//                                        if (json.has("error")) {
+//                                            String errorMessage = json.getString("error");
+//                                            Toast.makeText(ConsultaTurnos_Activity.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                                        } else {
+//                                            String fechaCompleta = json.getString("fecha");
+//                                            String fechaSinHora = fechaCompleta.substring(0, fechaCompleta.indexOf(' '));
+//                                            fecha.setText(fechaSinHora);
+//                                            numTurno.setText(json.getString("numero_turno"));
+//                                            nombreCom.setText(json.getString("nombre_completo"));
+//                                            Tservicio.setText(json.getString("tipo_servicio"));
+//                                        }
+//                                    }
+//                                } catch (JSONException e) {
+//                                    throw new RuntimeException(e);
+//                                }
+//                            }
+//                        });
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+//
+//    // Método para consumir la API y cancelar el turno
+//    public void ConsumirApiET() {
+//        String url = "http://192.168.1.111/ApisMovil/api.php?op=eliminarT&ced=" + Cedula;
+//        OkHttpClient cliente = new OkHttpClient();
+//
+//        Request get = new Request.Builder().url(url).build();
+//        cliente.newCall(get).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(ConsultaTurnos_Activity.this, "Fallo la conexión", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                try {
+//                    ResponseBody responseBody = response.body();
+//                    if (response.isSuccessful()) {
+//                        respuesta = responseBody.string();
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (respuesta.equals("1")) {
+//                                    Toast.makeText(ConsultaTurnos_Activity.this, "El turno ha sido cancelado", Toast.LENGTH_SHORT).show();
+//                                } else if (respuesta.equals("2")) {
+//                                    Toast.makeText(ConsultaTurnos_Activity.this, "Error al cancelar el turno", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        throw new IOException("Respuesta inesperada" + response);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+//}

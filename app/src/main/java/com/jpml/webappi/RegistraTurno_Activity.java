@@ -37,10 +37,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RegistraTurno_Activity extends AppCompatActivity {
 
-    TextView cedulas,nombreComp,telefono;
-    String respuesta = "", datos,Contra,NombreUsu;
+    TextView cedulas, nombreComp, telefono;
+    String respuesta = "", datos, Contra, NombreUsu;
     Spinner spi;
-    String usuario,clave,ced;
+    String cedula,nombre,telefonos;
     Button guarda;
 
 
@@ -50,219 +50,137 @@ public class RegistraTurno_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_registra_turno);
         cedulas = findViewById(R.id.edCedulas);
         nombreComp = findViewById(R.id.edNombreYApellido);
-        telefono=findViewById(R.id.edTelefonoUsu);
-        guarda=findViewById(R.id.btnInsert);
-        Intent intent = getIntent();
-         usuario = intent.getStringExtra("usuario");
-         clave = intent.getStringExtra("clave");
-         Contra=intent.getStringExtra("Pass");
-         NombreUsu=intent.getStringExtra("Nomb");
+        telefono = findViewById(R.id.edTelefonoUsu);
+        guarda = findViewById(R.id.btnInsert);
+        spi = findViewById(R.id.spinner);
+
+
+        Bundle datos = this.getIntent().getExtras();
+        cedula = datos.getString("cedula");
+        nombre = datos.getString("nombres");
+        telefonos = datos.getString("telefono");
+        cedulas.setText(cedula);
+        nombreComp.setText(nombre);
+        telefono.setText(telefonos);
+
+
+
+        APICBX();
+        // ConsultarAPI();
 
 
 
 
-        spi=findViewById(R.id.spinner);
-        ConsultarAPI();
 
-//        View rootView = findViewById(android.R.id.content);
+    }
+
+
+    public void inicio(View view){
+
+        Intent intent = new Intent(RegistraTurno_Activity.this, Principal_Activity.class);
+        startActivity(intent);
+        finish();
+
+
+    }
+
+
+
+
+
+
 //
-//        rootView.setOnClickListener(new View.OnClickListener() {
+//    public void ConsumirApi(View view) {
+//        String url = "http://192.168.1.111/ApisMovil/api.php?op=insTurnos&turn='"+spi.getSelectedItem()+"'&ced="+ced;;
+//        OkHttpClient cliente = new OkHttpClient();
+//
+//        Request get = new Request.Builder().url(url).build();
+//        cliente.newCall(get).enqueue(new Callback() {
 //            @Override
-//            public void onClick(View view) {
+//            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(getApplicationContext(), "Fallo la conexión", Toast.LENGTH_SHORT).show();
+//            }
 //
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                try {
 //
+//                    ResponseBody responseBody = response.body();
+//                    if (response.isSuccessful()) {
+//
+//                        respuesta = responseBody.string();
+//                        RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(RegistraTurno_Activity.this, "TURNO REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        });
+//                    } else {
+//                        throw new IOException("Respuesta inesperada" + response);
+//
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 //            }
 //        });
-
-
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.Navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.inicio) {
-                    Intent intent = new Intent(RegistraTurno_Activity.this, Principal_Activity.class);
-                    startActivity(intent);
-                } else if (item.getItemId() == R.id.agrega) {
-                    Intent intent = new Intent(RegistraTurno_Activity.this, RegistraTurno_Activity.class);
-                    startActivity(intent);
-                } else if (item.getItemId() == R.id.consultar) {
-                    Intent intent = new Intent(RegistraTurno_Activity.this, ConsultaTurnos_Activity.class);
-                    intent.putExtra("cedula", cedulas.getText().toString());
-                    intent.putExtra("Usuario",usuario);
-                    startActivity(intent);
-                }
-                return false;
-            }
-        });
-
-
-
-    }
-
-
-    public void ConsumirApi(View view) {
-        String url = "http://192.168.1.111/ApisMovil/api.php?op=insTurnos&turn='"+spi.getSelectedItem()+"'&ced="+ced;;
-        OkHttpClient cliente = new OkHttpClient();
-
-        Request get = new Request.Builder().url(url).build();
-        cliente.newCall(get).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Toast.makeText(getApplicationContext(), "Fallo la conexión", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-
-                    ResponseBody responseBody = response.body();
-                    if (response.isSuccessful()) {
-
-                        respuesta = responseBody.string();
-                        RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(RegistraTurno_Activity.this, "TURNO REGISTRADO CON EXITO", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                    } else {
-                        throw new IOException("Respuesta inesperada" + response);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
-    public void ConsultarAPI() {
-
-        String url = "http://192.168.1.111/ApisMovil/api.php?op=ConsultaDatos&usu=" +usuario+"&cla=" +clave;
-
-
-            OkHttpClient cliente = new OkHttpClient();
-            Request get = new Request.Builder()
-                    .url(url)
-                    .build();
-            cliente.newCall(get).enqueue(new Callback() {
-
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) {
-                    try {
-                        ResponseBody responseBody = response.body();
-                        if (!response.isSuccessful()) {
-                            throw new IOException("Unexpected code " + response);
-
-                        } else {
-
-                            respuesta = responseBody.string();
-                            RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-
-                                        if (respuesta.equals("[]")) {
-                                            //Toast.makeText(RegistraTurno_Activity.this, "NO TIENE TURNOS GENERADOS PORFAVOR GENERE UN TURNO.", Toast.LENGTH_SHORT).show();
-                                            ConsultarAPID();
-                                        } else {
-                                            JSONObject json = new JSONObject(respuesta);
-
-                                            ced = json.getString("Cedula");
-                                            cedulas.setText(ced);
-                                            nombreComp.setText(json.getString("nombre_completo"));
-                                            telefono.setText(json.getString("telefono"));
-                                            APICBX();
-                                        }
-                                    } catch (JSONException e) {
-                                        throw new RuntimeException(e);
-                                    }
-
-
-                                }
-                            });
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-
-
-    public void ConsultarAPID() {
-
-        String url = "http://192.168.1.111/ApisMovil/api.php?op=ConsultaDatos&usu=" +NombreUsu+"&cla=" +Contra;
-
-
-        OkHttpClient cliente = new OkHttpClient();
-        Request get = new Request.Builder()
-                .url(url)
-                .build();
-        cliente.newCall(get).enqueue(new Callback() {
-
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                try {
-                    ResponseBody responseBody = response.body();
-                    if (!response.isSuccessful()) {
-                        throw new IOException("Unexpected code " + response);
-
-                    } else {
-
-                        respuesta = responseBody.string();
-                        RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-
-                                    if (respuesta.equals("[]")) {
-                                        Toast.makeText(RegistraTurno_Activity.this, "NO ERROR AL PROCESAR SUS DATOS.", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        JSONObject json = new JSONObject(respuesta);
-
-                                        ced = json.getString("Cedula");
-                                        cedulas.setText(ced);
-                                        nombreComp.setText(json.getString("nombre_completo"));
-                                        telefono.setText(json.getString("telefono"));
-                                        APICBX();
-                                    }
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-
-
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-
-
-
-
-
+//
+//    }
+////
+//    public void ConsultarAPI() {
+//        String url = "http://192.168.1.111/ApisMovil/api.php?op=ConsultaDatos&usu=" +usuario+"&cla=" +clave;
+//        OkHttpClient cliente = new OkHttpClient();
+//        Request get = new Request.Builder()
+//                .url(url)
+//                .build();
+//        cliente.newCall(get).enqueue(new Callback() {
+//
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                try {
+//                    ResponseBody responseBody = response.body();
+//                    if (!response.isSuccessful()) {
+//                        throw new IOException("Unexpected code " + response);
+//
+//                    } else {
+//
+//                        respuesta = responseBody.string();
+//                        RegistraTurno_Activity.this.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                try {
+//                                    JSONObject json = new JSONObject(respuesta);
+//
+//                                    ced=json.getString("Cedula");
+//                                    cedulas.setText(ced);
+//                                    nombreComp.setText(json.getString("nombre_completo"));
+//                                    telefono.setText(json.getString("telefono"));
+//                                    APICBX();
+//                                } catch (JSONException e) {
+//                                    throw new RuntimeException(e);
+//                                }
+//
+//
+//                            }
+//                        });
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+//
+//
+//
+//
     public void APICBX() {
         String url = "http://192.168.1.111/ApisMovil/api.php?op=Servicios";
 

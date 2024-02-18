@@ -84,9 +84,13 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 if (respuesta.equals("2")) {
                                     //Toast.makeText(MainActivity.this, "Usuario correcto", Toast.LENGTH_SHORT).show();
+                                    Bundle datos = new Bundle();
+                                    String Usuario = v1.getText().toString();
+                                    String Clave = v2.getText().toString();
                                     Intent intent = new Intent(MainActivity.this, Principal_Activity.class);
-                                    intent.putExtra("usuario", v1.getText().toString());
-                                    intent.putExtra("clave", v2.getText().toString());
+                                    datos.putString("usuario", Usuario);
+                                    datos.putString("clave", Clave);
+                                    intent.putExtras(datos);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(MainActivity.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
