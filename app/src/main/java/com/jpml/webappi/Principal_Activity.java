@@ -69,7 +69,9 @@ public class Principal_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         toolbar1 = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar1);
-
+        video=findViewById(R.id.videoView_v);
+        video.setVideoURI(Uri.parse("android.resource://"+ getPackageName()+ "/"+ R.raw.turnos));
+        video.start();
        
 
 
