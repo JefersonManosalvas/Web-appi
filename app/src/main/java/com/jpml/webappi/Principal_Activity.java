@@ -58,17 +58,21 @@ public class Principal_Activity extends AppCompatActivity {
 
     VideoView video;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         toolbar1 = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar1);
 
+
         Bundle datos = this.getIntent().getExtras();
          Usuario = datos.getString("usuario");
          Clave = datos.getString("clave");
         ConsultarAPI();
+
 
 
 
@@ -144,6 +148,12 @@ public class Principal_Activity extends AppCompatActivity {
         intent.putExtras(datos);
         startActivity(intent);
 
+    }
+
+    public  void consultaT(View view){
+        Intent intent = new Intent(Principal_Activity.this, ConsultaTurnos_Activity.class);
+        startActivity(intent);
+        finish();
     }
 
 

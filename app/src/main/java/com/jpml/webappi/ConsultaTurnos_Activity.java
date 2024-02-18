@@ -76,6 +76,20 @@ public class ConsultaTurnos_Activity extends AppCompatActivity {
                 })
                 .show();
     }
+
+
+    public  void home(View view){
+        Intent intent = new Intent(ConsultaTurnos_Activity.this, Principal_Activity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public  void agregar(View view){
+        Intent intent = new Intent(ConsultaTurnos_Activity.this, RegistraTurno_Activity.class);
+        startActivity(intent);
+
+    }
+
 }
 //
 //    // Método para consultar la API y obtener los datos del turno

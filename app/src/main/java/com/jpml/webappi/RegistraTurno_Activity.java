@@ -65,13 +65,32 @@ public class RegistraTurno_Activity extends AppCompatActivity {
 
 
 
-        APICBX();
+        //APICBX();
         // ConsultarAPI();
+        guarda();
 
 
 
 
 
+    }
+
+    public void guarda() {
+        // Obtener los valores de los campos
+        String cedulaValue = cedulas.getText().toString().trim();
+        String nombreValue = nombreComp.getText().toString().trim();
+        String telefonoValue = telefono.getText().toString().trim();
+        String servicioValue = spi.getSelectedItem().toString().trim();
+
+        // Verificar si alguno de los campos está vacío
+        if (cedulaValue.isEmpty() || nombreValue.isEmpty() || telefonoValue.isEmpty() || servicioValue.isEmpty()) {
+            Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
+        } else {
+            // Si no hay campos vacíos, proceder con la inserción del turno
+            // Llamar al método para consumir la API y registrar el turno
+            // ConsumirApi(view);
+            Toast.makeText(this, "Turno registrado con éxito", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -228,5 +247,7 @@ public class RegistraTurno_Activity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }
